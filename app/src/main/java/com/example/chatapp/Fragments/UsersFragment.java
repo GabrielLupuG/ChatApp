@@ -1,7 +1,5 @@
 package com.example.chatapp.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.chatapp.R;
 
-public class UserFragment extends Fragment {
+public class UsersFragment extends Fragment {
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

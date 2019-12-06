@@ -19,7 +19,7 @@ import java.util.List;
 
 
 
-public class ChatFragment extends Fragment {
+public class ChatsFragment extends Fragment {
 
 
     private RecyclerView reciclerView;
