@@ -80,14 +80,23 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseUser firebaseUser=auth.getCurrentUser();
                     String userid= firebaseUser.getUid();
 
-                    reference = FirebaseDatabase.getInstance().getReference("User").child(userid);
+                    String name = user.getText().toString();
 
-                    HashMap<String, String>hashMap=new HashMap<>();
+                    reference = FirebaseDatabase.getInstance().getReference("User").child(name);
+
+//                    HashMap<String, String>hashMap=new HashMap<>();
+//                    hashMap.put("id", userid);
+//                    hashMap.put("username", username);
+//                    hashMap.put("email", email);
+//                    hashMap.put("password", password);
+//                    hashMap.put("imageURL", "default");
+
+                    HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("id", userid);
                     hashMap.put("username", username);
-                    hashMap.put("email", email);
-                    hashMap.put("password", password);
                     hashMap.put("imageURL", "default");
+                    hashMap.put("status", "offline");
+                    hashMap.put("search", username.toLowerCase());
 
 
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

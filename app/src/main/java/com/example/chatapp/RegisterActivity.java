@@ -18,11 +18,14 @@ import android.view.MenuItem;
 
 import android.widget.TextView;
 
+
 import com.bumptech.glide.Glide;
-import com.example.chatapp.Fragments.ChatsFragment;
-//import com.example.chatapp.Fragments.ProfileFragment;
+import com.example.chatapp.Fragments.ChatFragment;
+
+import com.example.chatapp.Fragments.ProfileFragment;
 import com.example.chatapp.Fragments.UsersFragment;
 import com.example.chatapp.Model.Chat;
+
 import com.example.chatapp.Model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     CircleImageView profile_image;
     TextView username;
 
+
     FirebaseUser firebaseUser;
     DatabaseReference reference;
 
@@ -60,21 +64,25 @@ public class RegisterActivity extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
 
+        String name = username.getText().toString();
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(name);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 username.setText(user.getUsername());
-//                if (user.getImageURL().equals("default")){
-//                    profile_image.setImageResource(R.mipmap.ic_launcher);
-//                } else {
-//
-//                    //change this
-//                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
-//                }
+                if ("default".equals(user.getImageURL())){
+                    profile_image.setImageResource(R.mipmap.ic_launcher);
+                } else {
+
+
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                }
             }
 
             @Override
@@ -101,13 +109,13 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if (unread == 0){
-                    viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
+                    viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
                 } else {
-                    viewPagerAdapter.addFragment(new ChatsFragment(), "("+unread+") Chats");
+                    viewPagerAdapter.addFragment(new ChatFragment(), "("+unread+") Chats");
                 }
 
                 viewPagerAdapter.addFragment(new UsersFragment(), "Users");
-                //viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
                 viewPager.setAdapter(viewPagerAdapter);
 
@@ -136,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             case  R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                // change this code beacuse your app will crash
+
                 startActivity(new Intent(RegisterActivity.this, StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 return true;
         }
